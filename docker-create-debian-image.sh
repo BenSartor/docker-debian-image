@@ -7,7 +7,7 @@ declare -r READLINK=${GREADLINK:-"$(which readlink)"}
 declare -r BASE_DIR="$(dirname $(${READLINK} -f $0))"
 declare -r BASE_DIR_DOCKER="/debian-docker"
 
-declare -r DOCKER_SCRIPT="${BASE_DIR_DOCKER}/create-debian-image.sh"
+declare -r DOCKER_SCRIPT="${BASE_DIR_DOCKER}/create-debian-tar.sh"
 declare -r DEBOOTSTAP_DIR_NAME="debootstrap"
 declare -r DEBOOTSTAP_TAR="${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}.tar"
 
