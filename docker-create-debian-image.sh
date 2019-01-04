@@ -9,12 +9,15 @@ declare -r BASE_DIR_DOCKER="/debian-docker"
 
 declare -r DOCKER_SCRIPT="${BASE_DIR_DOCKER}/create-debian-image.sh"
 declare -r DEBOOTSTAP_DIR_NAME="debootstrap"
+declare -r DEBOOTSTAP_DIR="${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}"
 declare -r DEBOOTSTAP_DIR_DOCKER="${BASE_DIR_DOCKER}/${DEBOOTSTAP_DIR_NAME}"
 
-mkdir "${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}"
+mkdir "${DEBOOTSTAP_DIR}"
 
 ## debootstrab in a docker container
 docker run --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
 
 ## create docker image
-tar -C "${TMPDIR}" -c . | docker import - debootstrap-stretch
+tar -C "${DEBOOTSTAP_DIR}" -c . | docker import - debootstrap-stretch
+
+rm -rf "${DEBOOTSTAP_DIR}"
