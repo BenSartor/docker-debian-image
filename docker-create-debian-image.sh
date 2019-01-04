@@ -1,10 +1,17 @@
 #!/bin/bash
 set -eu -o pipefail
 
-declare -r DEBOOTSTAP_DIR="debootstrap"
-declare -r DEBOOTSTAP_DIR_DOCKER="/debootstrap"
+declare -r GREADLINK=$(which greadlink)
+declare -r READLINK=${GREADLINK:-"$(which readlink)"}
 
-mkdir "${DEBOOTSTAP_DIR}"
+declare -r BASE_DIR="$(dirname $(${READLINK} -f $0))"
+declare -r BASE_DIR_DOCKER="/debian-docker"
+
+declare -r DOCKER_SCRIPT="${BASE_DIR_DOCKER}/create-debian-image.sh"
+declare -r DEBOOTSTAP_DIR_NAME="debootstrap"
+declare -r DEBOOTSTAP_DIR_DOCKER="${BASE_DIR_DOCKER}/${DEBOOTSTAP_DIR_NAME}"
+
+mkdir "${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}"
 
 ## debootstrab in a docker container
-docker run --rm -v $(greadlink -f "${DEBOOTSTAP_DIR}"):"${DEBOOTSTAP_DIR_DOCKER}" debian:stretch-slim bash -c "apt update ; apt dist-upgrade -y ; apt install -y debootstrap fakechroot fakeroot ; fakechroot fakeroot debootstrap --variant=minbase stretch \"${DEBOOTSTAP_DIR_DOCKER}\" http://deb.debian.org/debian"
+docker run --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
