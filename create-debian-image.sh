@@ -38,18 +38,3 @@ do_bootfloppy = no
 do_initrd = no
 link_in_boot = no
 EOF
-
-echo "** remove devices not used in docker"
-rm "${DEBOOTSTAP_DIR}"/dev/fd
-rm "${DEBOOTSTAP_DIR}"/dev/full
-rm "${DEBOOTSTAP_DIR}"/dev/null
-rm "${DEBOOTSTAP_DIR}"/dev/ptmx
-rm -rf "${DEBOOTSTAP_DIR}"/dev/pts
-rm -f "${DEBOOTSTAP_DIR}"/dev/random
-rm -rf "${DEBOOTSTAP_DIR}"/dev/shm
-rm "${DEBOOTSTAP_DIR}"/dev/stderr
-rm "${DEBOOTSTAP_DIR}"/dev/stdin
-rm "${DEBOOTSTAP_DIR}"/dev/stdout
-rm "${DEBOOTSTAP_DIR}"/dev/tty
-rm -f "${DEBOOTSTAP_DIR}"/dev/urandom
-rm -f "${DEBOOTSTAP_DIR}"/dev/zero
