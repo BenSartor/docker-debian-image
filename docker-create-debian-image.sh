@@ -19,11 +19,11 @@ fi
 
 echo "debootstrab in a docker container"
 #docker run --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
-docker run --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim bash -c "\"${DOCKER_SCRIPT}\" \"${DEBOOTSTAP_DIR_NAME}\" ; mv \"${DEBOOTSTAP_DIR_NAME}\" \"${BASE_DIR_DOCKER}\""
+docker run -it --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim bash -c "\"${DOCKER_SCRIPT}\" \"${DEBOOTSTAP_DIR_NAME}\" ; mv \"${DEBOOTSTAP_DIR_NAME}.tar\" \"${BASE_DIR_DOCKER}\""
 
 echo "create docker image"
-tar -C "${DEBOOTSTAP_DIR}" -c . | docker import - debootstrap-stretch
+#tar -C "${DEBOOTSTAP_DIR}" -c . | docker import - debootstrap-stretch
 
-rm -rf "${DEBOOTSTAP_DIR}"
+#rm -rf "${DEBOOTSTAP_DIR}"
 
 echo "done"

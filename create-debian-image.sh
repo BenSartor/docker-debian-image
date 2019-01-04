@@ -9,7 +9,7 @@ echo "** install requirements"
 apt update
 apt dist-upgrade -y
 #apt install -y debootstrap fakechroot fakeroot
-apt install -y debootstrap
+apt install -y debootstrap tar
 
 
 echo "** debootstrap"
@@ -20,17 +20,17 @@ debootstrap --variant=minbase stretch "${DEBOOTSTAP_DIR}" http://deb.debian.org/
 
 
 echo "** deactivate invoke of init.d scripts"
-cat <<EOF > ${DEBOOTSTAP_DIR}/usr/sbin/policy-rc.d
+cat <<EOF > "${DEBOOTSTAP_DIR}/usr/sbin/policy-rc.d"
 #!/bin/sh
 exit 101
 EOF
 
-chmod ugo+x ${DEBOOTSTAP_DIR}/usr/sbin/policy-rc.d
+chmod ugo+x "${DEBOOTSTAP_DIR}/usr/sbin/policy-rc.d"
 
 
 
 echo "** deactivate bootloader install with linux-image"
-cat <<EOF > ${DEBOOTSTAP_DIR}/etc/kernel-img.conf
+cat <<EOF > "${DEBOOTSTAP_DIR}/etc/kernel-img.conf"
 do_symlinks = yes
 relative_links = yes
 do_bootloader = no
@@ -38,3 +38,11 @@ do_bootfloppy = no
 do_initrd = no
 link_in_boot = no
 EOF
+
+
+echo "** delete some caches"
+rm "${DEBOOTSTAP_DIR}"/var/cache/apt/archives/*.deb
+
+
+echo "** tar"
+tar -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
