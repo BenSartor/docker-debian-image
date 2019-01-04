@@ -1,8 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
 
-#declare -r DEBOOTSTAP_DIR=$1
-declare -r DEBOOTSTAP_DIR="debootstrap"
+declare -r DEBOOTSTAP_DIR=$1
 
 
 

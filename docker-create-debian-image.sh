@@ -12,10 +12,13 @@ declare -r DEBOOTSTAP_DIR_NAME="debootstrap"
 declare -r DEBOOTSTAP_DIR="${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}"
 declare -r DEBOOTSTAP_DIR_DOCKER="${BASE_DIR_DOCKER}/${DEBOOTSTAP_DIR_NAME}"
 
-mkdir "${DEBOOTSTAP_DIR}"
+if [ -e "${DEBOOTSTAP_DIR}" ] ; then
+    echo "file already exists: ${DEBOOTSTAP_DIR}"
+fi
 
 echo "debootstrab in a docker container"
-docker run --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
+#docker run --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
+docker run --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim bash -c "\"${DOCKER_SCRIPT}\" \"${DEBOOTSTAP_DIR_NAME}\" ; mv \"${DEBOOTSTAP_DIR_NAME}\" \"${BASE_DIR_DOCKER}\""
 
 echo "create docker image"
 tar -C "${DEBOOTSTAP_DIR}" -c . | docker import - debootstrap-stretch
