@@ -15,3 +15,6 @@ mkdir "${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}"
 
 ## debootstrab in a docker container
 docker run --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
+
+## create docker image
+tar -C "${TMPDIR}" -c . | docker import - debootstrap-stretch
