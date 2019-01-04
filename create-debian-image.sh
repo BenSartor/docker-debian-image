@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
 
-declare -r OUTPUR_DIR=$1
+#declare -r DEBOOTSTAP_DIR=$1
 declare -r DEBOOTSTAP_DIR="debootstrap"
 
 
@@ -39,8 +39,3 @@ do_bootfloppy = no
 do_initrd = no
 link_in_boot = no
 EOF
-
-
-
-echo "** move resoult to shared directory"
-mv "${DEBOOTSTAP_DIR}" "${DEBOOTSTAP_DIR}"
