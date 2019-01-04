@@ -13,7 +13,8 @@ declare -r DEBOOTSTAP_DIR="${BASE_DIR}/${DEBOOTSTAP_DIR_NAME}"
 declare -r DEBOOTSTAP_DIR_DOCKER="${BASE_DIR_DOCKER}/${DEBOOTSTAP_DIR_NAME}"
 
 if [ -e "${DEBOOTSTAP_DIR}" ] ; then
-    echo "file already exists: ${DEBOOTSTAP_DIR}"
+    echo "error directory already exists: ${DEBOOTSTAP_DIR}"
+    exit 1
 fi
 
 echo "debootstrab in a docker container"
