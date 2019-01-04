@@ -8,13 +8,10 @@ declare -r DEBOOTSTAP_DIR=$1
 echo "** install requirements"
 apt update
 apt dist-upgrade -y
-#apt install -y debootstrap fakechroot fakeroot
 apt install -y debootstrap tar
 
 
 echo "** debootstrap"
-#fakechroot fakeroot debootstrap --variant=minbase stretch "${DEBOOTSTAP_DIR}" http://deb.debian.org/debian
-#fakechroot fakeroot debootstrap --verbose --variant=minbase stretch "${DEBOOTSTAP_DIR}" http://deb.debian.org/debian
 debootstrap --variant=minbase stretch "${DEBOOTSTAP_DIR}" http://deb.debian.org/debian
 
 
