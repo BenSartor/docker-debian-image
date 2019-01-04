@@ -14,10 +14,12 @@ declare -r DEBOOTSTAP_DIR_DOCKER="${BASE_DIR_DOCKER}/${DEBOOTSTAP_DIR_NAME}"
 
 mkdir "${DEBOOTSTAP_DIR}"
 
-## debootstrab in a docker container
-docker run --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
+echo "debootstrab in a docker container"
+docker run --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${DEBOOTSTAP_DIR_DOCKER}"
 
-## create docker image
+echo "create docker image"
 tar -C "${DEBOOTSTAP_DIR}" -c . | docker import - debootstrap-stretch
 
 rm -rf "${DEBOOTSTAP_DIR}"
+
+echo "done"
