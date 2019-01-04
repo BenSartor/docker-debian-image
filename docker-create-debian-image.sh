@@ -22,8 +22,9 @@ echo "debootstrab in a docker container"
 docker run -it --privileged --cap-add=SYS_ADMIN --cap-add MKNOD --security-opt apparmor:unconfined --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim bash -c "\"${DOCKER_SCRIPT}\" \"${DEBOOTSTAP_DIR_NAME}\" ; mv \"${DEBOOTSTAP_DIR_NAME}.tar\" \"${BASE_DIR_DOCKER}\""
 
 echo "create docker image"
-#tar -C "${DEBOOTSTAP_DIR}" -c . | docker import - debootstrap-stretch
+docker import "${DEBOOTSTAP_DIR}.tar" debootstrap-stretch
 
 #rm -rf "${DEBOOTSTAP_DIR}"
+rm "${DEBOOTSTAP_DIR}.tar"
 
 echo "done"
