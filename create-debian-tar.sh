@@ -8,9 +8,6 @@ declare -r DESTINATION_TAR=${2:?"${USAGE}"}
 
 ## use standard language for reproducibilty
 export LC_ALL=C.UTF-8
-## apt-get options
-declare -r APT_GET="LANG=C DEBIAN_FRONTEND=noninteractive apt-get"
-declare -r APT_GET_OPTIONS="--no-install-recommends --assume-yes"
 
 
 
@@ -29,9 +26,9 @@ trap cleanup EXIT
 
 
 echo "** install requirements"
-"${APT_GET}" update
-"${APT_GET}" dist-upgrade "${APT_GET_OPTIONS}"
-"${APT_GET}" install "${APT_GET_OPTIONS}" debootstrap tar
+LANG=C DEBIAN_FRONTEND=noninteractive apt-get update
+LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommends --assume-yes
+LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes debootstrap tar
 
 
 
@@ -68,8 +65,8 @@ EOF
 
 
 echo "** update debian packages"
-#chroot "${DEBOOTSTAP_DIR}" bash -c "${APT_GET} update"
-#chroot "${DEBOOTSTAP_DIR}" bash -c "${APT_GET} install ${APT_GET_OPTIONS} apt-transport-https"
+#chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
+#chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes apt-transport-https"
 
 cat <<EOF > "${DEBOOTSTAP_DIR}/etc/apt/sources.list"
 ## ${DEBIAN_SUITE}
@@ -85,8 +82,8 @@ deb http://deb.debian.org/debian/ ${DEBIAN_SUITE}-updates main
 #deb-src http://deb.debian.org/debian/ ${DEBIAN_SUITE}-updates main
 EOF
 
-chroot "${DEBOOTSTAP_DIR}" bash -c "${APT_GET} update"
-chroot "${DEBOOTSTAP_DIR}" bash -c "${APT_GET} dist-upgrade ${APT_GET_OPTIONS}"
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommends --assume-yes"
 
 declare -r DEBIAN_SOURCE_DATE=$(chroot "${DEBOOTSTAP_DIR}" bash -c "stat -c %y /usr/share/doc/*/changelog.Debian.gz | sort | tail -n 1")
 echo "** DEBIAN_SOURCE_DATE=${DEBIAN_SOURCE_DATE}"
@@ -117,7 +114,7 @@ path-include /usr/share/locale/locale.alias
 path-include /usr/share/omf/*/*-C.emf
 EOF
 
-chroot "${DEBOOTSTAP_DIR_SLIM}" bash -c "${APT_GET} install ${APT_GET_OPTIONS} --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
+chroot "${DEBOOTSTAP_DIR_SLIM}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
 
 
 function create-tar() {
@@ -127,7 +124,7 @@ function create-tar() {
 
 
     echo "** delete some caches in: ${L_DEBOOTSTAP_DIR}"
-    chroot "${L_DEBOOTSTAP_DIR}" bash -c "${APT_GET} clean"
+    chroot "${L_DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get clean"
     #rm -rf "${L_DEBOOTSTAP_DIR}"/var/cache/apt/archives/ ## apt-get clean takes care of it
     rm -rf "${L_DEBOOTSTAP_DIR}"/var/lib/apt/lists/*
     rm "${L_DEBOOTSTAP_DIR}"/var/log/alternatives.log
