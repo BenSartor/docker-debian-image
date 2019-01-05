@@ -1,8 +1,18 @@
 #!/bin/bash
 set -eu -o pipefail
 
-declare -r DEBOOTSTAP_DIR=$1
-mkdir "${DEBOOTSTAP_DIR}"
+declare -r DESTINATION_TAR=${1:?"usage example: $0 /tmp/debootstrap.tar"}
+
+
+
+declare -r DEBOOTSTAP_DIR=$(mktemp --directory --tmpdir extract-vendor-image-XXXXXXXXXX)
+echo "** created temporary directory: ${DEBOOTSTAP_DIR}"
+
+function cleanup {
+    echo "** removing temporary directory: ${DEBOOTSTAP_DIR}"
+    rm -rf "${DEBOOTSTAP_DIR}"
+}
+trap cleanup EXIT
 
 
 
@@ -116,4 +126,4 @@ rm "${DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
 
 
 echo "** creating tar with debian source date: ${DEBIAN_SOURCE_DATE}"
-tar --clamp-mtime --mtime="${DEBIAN_SOURCE_DATE}" --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
+tar --clamp-mtime --mtime="${DEBIAN_SOURCE_DATE}" --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DESTINATION_TAR}" .
