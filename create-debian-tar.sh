@@ -7,7 +7,7 @@ declare -r DESTINATION_TAR=${2:?"${USAGE}"}
 
 
 ## use standard language for reproducibilty
-export LC_ALL=C.UTF-8
+declare -rx LC_ALL=C.UTF-8
 
 
 
