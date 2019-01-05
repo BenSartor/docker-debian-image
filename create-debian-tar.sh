@@ -82,7 +82,7 @@ EOF
 
 echo "** delete some caches"
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get clean"
-#rm -rf "${DEBOOTSTAP_DIR}"/var/cache/apt/archives/ ## apt-get clean removces theses
+#rm -rf "${DEBOOTSTAP_DIR}"/var/cache/apt/archives/ ## apt-get clean takes care of it
 rm -rf "${DEBOOTSTAP_DIR}"/var/lib/apt/lists/*
 rm "${DEBOOTSTAP_DIR}"/var/log/alternatives.log
 rm "${DEBOOTSTAP_DIR}"/var/log/bootstrap.log
