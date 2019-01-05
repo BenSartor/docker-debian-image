@@ -5,6 +5,11 @@ declare -r DESTINATION_TAR=${1:?"usage example: $0 /tmp/debootstrap.tar"}
 
 
 
+## use standard language for reproducibilty
+export LC_ALL=C.UTF-8
+
+
+
 declare -r DEBOOTSTAP_DIR=$(mktemp --directory --tmpdir extract-vendor-image-XXXXXXXXXX)
 echo "** created temporary directory: ${DEBOOTSTAP_DIR}"
 
