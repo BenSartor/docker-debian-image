@@ -48,4 +48,4 @@ rm "${DEBOOTSTAP_DIR}"/var/log/dpkg.log
 
 
 echo "** tar"
-tar -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
+tar --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
