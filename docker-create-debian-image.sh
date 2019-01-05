@@ -22,7 +22,7 @@ if [ -e "${DEBOOTSTAP_TAR}" ] ; then
     exit 1
 fi
 
-echo "debootstrab in a docker container"
+echo "debootstrab in docker container: ${DOCKER_BUILD_IMAGE}"
 docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" "${DOCKER_BUILD_IMAGE}" "${DOCKER_SCRIPT}" "${BASE_DIR_DOCKER}/${DEBOOTSTAP_TAR_NAME}"
 
 
