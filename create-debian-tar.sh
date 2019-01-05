@@ -65,17 +65,17 @@ echo "** update debian packages"
 #chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes apt-transport-https"
 
 cat <<EOF > "${DEBOOTSTAP_DIR}/etc/apt/sources.list"
-## "${DEBIAN_SUITE}"
-deb http://deb.debian.org/debian/ "${DEBIAN_SUITE}" main
-#deb-src http://deb.debian.org/debian/ "${DEBIAN_SUITE}" main
+## ${DEBIAN_SUITE}
+deb http://deb.debian.org/debian/ ${DEBIAN_SUITE} main
+#deb-src http://deb.debian.org/debian/ ${DEBIAN_SUITE} main
 
-## "${DEBIAN_SUITE}"-security
-deb http://deb.debian.org/debian-security "${DEBIAN_SUITE}"/updates main
-#deb-src http://deb.debian.org/debian-security "${DEBIAN_SUITE}"/updates main
+## ${DEBIAN_SUITE}-security
+deb http://deb.debian.org/debian-security ${DEBIAN_SUITE}/updates main
+#deb-src http://deb.debian.org/debian-security ${DEBIAN_SUITE}/updates main
 
-## "${DEBIAN_SUITE}"-updates, previously known as 'volatile'
-deb http://deb.debian.org/debian/ "${DEBIAN_SUITE}"-updates main
-#deb-src http://deb.debian.org/debian/ "${DEBIAN_SUITE}"-updates main
+## ${DEBIAN_SUITE}-updates, previously known as 'volatile'
+deb http://deb.debian.org/debian/ ${DEBIAN_SUITE}-updates main
+#deb-src http://deb.debian.org/debian/ ${DEBIAN_SUITE}-updates main
 EOF
 
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
