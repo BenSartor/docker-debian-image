@@ -30,8 +30,8 @@ trap cleanup EXIT
 
 echo "** install requirements"
 apt-get update
-apt-get dist-upgrade "${APT_GET_OPTIONS}"
-apt-get install "${APT_GET_OPTIONS}" debootstrap tar
+apt-get dist-upgrade ${APT_GET_OPTIONS}
+apt-get install ${APT_GET_OPTIONS} debootstrap tar
 
 
 
