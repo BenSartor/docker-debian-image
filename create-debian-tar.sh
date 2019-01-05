@@ -12,6 +12,7 @@ export LC_ALL=C.UTF-8
 
 
 declare -r DEBOOTSTAP_DIR=$(mktemp --directory --tmpdir "$(basename $0)-XXXXXXXXXX")
+declare -r DEBOOTSTAP_DIR_SLIM="${DEBOOTSTAP_DIR}-slim"
 echo "** created temporary directory: ${DEBOOTSTAP_DIR}"
 
 function cleanup {
@@ -88,7 +89,8 @@ echo "** DEBIAN_SOURCE_DATE=${DEBIAN_SOURCE_DATE}"
 
 
 echo "** reduce image size"
-cat <<EOF > "${DEBOOTSTAP_DIR}/etc/dpkg/dpkg.cfg.d/docker"
+cp -a "${DEBOOTSTAP_DIR}" "${DEBOOTSTAP_DIR_SLIM}"
+cat <<EOF > "${DEBOOTSTAP_DIR_SLIM}/etc/dpkg/dpkg.cfg.d/docker"
 path-exclude /usr/share/doc/*
 path-exclude /usr/share/doc/kde/HTML/*/*
 path-exclude /usr/share/gnome/help/*/*
@@ -110,29 +112,39 @@ path-include /usr/share/locale/locale.alias
 path-include /usr/share/omf/*/*-C.emf
 EOF
 
-chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
+chroot "${DEBOOTSTAP_DIR_SLIM}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
+
+
+function create-tar() {
+    local -r $L_DEBOOTSTAP_DIR=$1
+    local -r $L_DESTINATION_TAR=$2
+    local -r $L_DEBIAN_SOURCE_DATE=$3
+
+
+    echo "** delete some caches"
+    chroot "${L_DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get clean"
+    #rm -rf "${L_DEBOOTSTAP_DIR}"/var/cache/apt/archives/ ## apt-get clean takes care of it
+    rm -rf "${L_DEBOOTSTAP_DIR}"/var/lib/apt/lists/*
+    rm "${L_DEBOOTSTAP_DIR}"/var/log/alternatives.log
+    rm "${L_DEBOOTSTAP_DIR}"/var/log/bootstrap.log
+    rm "${L_DEBOOTSTAP_DIR}"/var/log/dpkg.log
+    rm "${L_DEBOOTSTAP_DIR}"/var/log/apt/history.log
+    rm "${L_DEBOOTSTAP_DIR}"/var/log/apt/term.log
 
 
 
-echo "** delete some caches"
-chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get clean"
-#rm -rf "${DEBOOTSTAP_DIR}"/var/cache/apt/archives/ ## apt-get clean takes care of it
-rm -rf "${DEBOOTSTAP_DIR}"/var/lib/apt/lists/*
-rm "${DEBOOTSTAP_DIR}"/var/log/alternatives.log
-rm "${DEBOOTSTAP_DIR}"/var/log/bootstrap.log
-rm "${DEBOOTSTAP_DIR}"/var/log/dpkg.log
-rm "${DEBOOTSTAP_DIR}"/var/log/apt/history.log
-rm "${DEBOOTSTAP_DIR}"/var/log/apt/term.log
+    echo "** make reproducable"
+    echo "$(basename $L_DESTINATION_TAR .tar)" > "${L_DEBOOTSTAP_DIR}"/etc/hostname
+    rm "${L_DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
+    chmod u+rwx "${L_DEBOOTSTAP_DIR}"
+    chmod go-rwx "${L_DEBOOTSTAP_DIR}"
 
 
 
-echo "** make reproducable"
-echo "$(basename $DESTINATION_TAR .tar)" > "${DEBOOTSTAP_DIR}"/etc/hostname
-rm "${DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
-chmod u+rwx "${DEBOOTSTAP_DIR}"
-chmod go-rwx "${DEBOOTSTAP_DIR}"
+    echo "** creating tar with debian source date: ${L_DEBIAN_SOURCE_DATE}"
+    tar --clamp-mtime --mtime="${L_DEBIAN_SOURCE_DATE}" --exclude=dev -C "${L_DEBOOTSTAP_DIR}" -cf "${L_DESTINATION_TAR}" .
+}
 
-
-
-echo "** creating tar with debian source date: ${DEBIAN_SOURCE_DATE}"
-tar --clamp-mtime --mtime="${DEBIAN_SOURCE_DATE}" --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DESTINATION_TAR}" .
+declare -r DESTINATION_TAR_SLIM="$(dirname $L_DESTINATION_TAR)/$(basename $L_DESTINATION_TAR .tar)-slim.tar"
+create-tar "${DEBOOTSTAP_DIR}" "${DESTINATION_TAR}" ${DEBIAN_SOURCE_DATE}
+create-tar "${DEBOOTSTAP_DIR_SLIM}" "${DESTINATION_TAR_SLIM}" ${DEBIAN_SOURCE_DATE}
