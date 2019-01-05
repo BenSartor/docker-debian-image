@@ -19,7 +19,7 @@ if [ -e "${DEBOOTSTAP_TAR}" ] ; then
 fi
 
 echo "debootstrab in a docker container"
-docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim \
+docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:buster-slim \
     bash -c "\"${DOCKER_SCRIPT}\" \"${DEBOOTSTAP_DIR_NAME}\" ; mv \"${DEBOOTSTAP_DIR_NAME}.tar\" \"${BASE_DIR_DOCKER}\""
 
 
