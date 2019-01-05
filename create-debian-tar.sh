@@ -145,6 +145,6 @@ function create-tar() {
     tar --clamp-mtime --mtime="${L_DEBIAN_SOURCE_DATE}" --exclude=dev -C "${L_DEBOOTSTAP_DIR}" -cf "${L_DESTINATION_TAR}" .
 }
 
-declare -r DESTINATION_TAR_SLIM="$(dirname $L_DESTINATION_TAR)/$(basename $L_DESTINATION_TAR .tar)-slim.tar"
+declare -r DESTINATION_TAR_SLIM="$(dirname $DESTINATION_TAR)/$(basename $DESTINATION_TAR .tar)-slim.tar"
 create-tar "${DEBOOTSTAP_DIR}" "${DESTINATION_TAR}" ${DEBIAN_SOURCE_DATE}
 create-tar "${DEBOOTSTAP_DIR_SLIM}" "${DESTINATION_TAR_SLIM}" ${DEBIAN_SOURCE_DATE}
