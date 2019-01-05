@@ -18,6 +18,8 @@ echo "** created temporary directory: ${DEBOOTSTAP_DIR}"
 function cleanup {
     echo "** removing temporary directory: ${DEBOOTSTAP_DIR}"
     rm -rf "${DEBOOTSTAP_DIR}"
+    echo "** removing temporary directory: ${DEBOOTSTAP_DIR_SLIM}"
+    rm -rf "${DEBOOTSTAP_DIR_SLIM}"
 }
 trap cleanup EXIT
 
@@ -121,7 +123,7 @@ function create-tar() {
     local -r L_DEBIAN_SOURCE_DATE=$3
 
 
-    echo "** delete some caches"
+    echo "** delete some caches in: ${L_DEBOOTSTAP_DIR}"
     chroot "${L_DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get clean"
     #rm -rf "${L_DEBOOTSTAP_DIR}"/var/cache/apt/archives/ ## apt-get clean takes care of it
     rm -rf "${L_DEBOOTSTAP_DIR}"/var/lib/apt/lists/*
@@ -133,7 +135,7 @@ function create-tar() {
 
 
 
-    echo "** make reproducable"
+    echo "** make reproducable: ${L_DEBOOTSTAP_DIR}"
     echo "$(basename $L_DESTINATION_TAR .tar)" > "${L_DEBOOTSTAP_DIR}"/etc/hostname
     rm "${L_DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
     chmod u+rwx "${L_DEBOOTSTAP_DIR}"
