@@ -2,7 +2,7 @@
 set -eu -o pipefail
 
 declare -r DESTINATION_TAR=${1:?"usage example: $0 /tmp/debootstrap.tar"}
-
+declare -r DEBIAN_SUITE=${DEBIAN_SUITE:-"stretch"}
 
 
 ## use standard language for reproducibilty
@@ -29,7 +29,7 @@ LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --
 
 
 echo "** debootstrap"
-debootstrap --variant=minbase stretch "${DEBOOTSTAP_DIR}" http://deb.debian.org/debian
+debootstrap --variant=minbase "${DEBIAN_SUITE}" "${DEBOOTSTAP_DIR}" http://deb.debian.org/debian
 
 
 
@@ -65,17 +65,17 @@ echo "** update debian packages"
 #chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes apt-transport-https"
 
 cat <<EOF > "${DEBOOTSTAP_DIR}/etc/apt/sources.list"
-## stretch
-deb http://deb.debian.org/debian/ stretch main
-#deb-src http://deb.debian.org/debian/ stretch main
+## "${DEBIAN_SUITE}"
+deb http://deb.debian.org/debian/ "${DEBIAN_SUITE}" main
+#deb-src http://deb.debian.org/debian/ "${DEBIAN_SUITE}" main
 
-## stretch-security
-deb http://deb.debian.org/debian-security stretch/updates main
-#deb-src http://deb.debian.org/debian-security stretch/updates main
+## "${DEBIAN_SUITE}"-security
+deb http://deb.debian.org/debian-security "${DEBIAN_SUITE}"/updates main
+#deb-src http://deb.debian.org/debian-security "${DEBIAN_SUITE}"/updates main
 
-## stretch-updates, previously known as 'volatile'
-deb http://deb.debian.org/debian/ stretch-updates main
-#deb-src http://deb.debian.org/debian/ stretch-updates main
+## "${DEBIAN_SUITE}"-updates, previously known as 'volatile'
+deb http://deb.debian.org/debian/ "${DEBIAN_SUITE}"-updates main
+#deb-src http://deb.debian.org/debian/ "${DEBIAN_SUITE}"-updates main
 EOF
 
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
