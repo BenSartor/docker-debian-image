@@ -130,8 +130,8 @@ function create-tar() {
     rm "${L_DEBOOTSTAP_DIR}"/var/log/alternatives.log
     rm "${L_DEBOOTSTAP_DIR}"/var/log/bootstrap.log
     rm "${L_DEBOOTSTAP_DIR}"/var/log/dpkg.log
-    rm "${L_DEBOOTSTAP_DIR}"/var/log/apt/history.log
-    rm "${L_DEBOOTSTAP_DIR}"/var/log/apt/term.log
+    rm -f "${L_DEBOOTSTAP_DIR}"/var/log/apt/history.log
+    rm -f "${L_DEBOOTSTAP_DIR}"/var/log/apt/term.log
 
 
 
