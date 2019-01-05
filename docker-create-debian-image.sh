@@ -2,6 +2,9 @@
 set -eu -o pipefail
 
 declare -r SKIP_DOCKER_IMPORT=${SKIP_DOCKER_IMPORT:-"false"}
+declare -r DOCKER_IMAGE=${DOCKER_IMAGE:-"debian:stretch-slim"}
+
+
 
 declare -r GREADLINK=$(which greadlink)
 declare -r READLINK=${GREADLINK:-"$(which readlink)"}
@@ -20,7 +23,7 @@ if [ -e "${DEBOOTSTAP_TAR}" ] ; then
 fi
 
 echo "debootstrab in a docker container"
-docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" debian:stretch-slim "${DOCKER_SCRIPT}" "${BASE_DIR_DOCKER}/${DEBOOTSTAP_TAR_NAME}"
+docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" "${DOCKER_IMAGE}" "${DOCKER_SCRIPT}" "${BASE_DIR_DOCKER}/${DEBOOTSTAP_TAR_NAME}"
 
 
 if [[ "${SKIP_DOCKER_IMPORT}" == "false" ]] ; then
