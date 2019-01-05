@@ -37,8 +37,14 @@ link_in_boot = no
 EOF
 
 
+
 echo "** delete some caches"
 rm "${DEBOOTSTAP_DIR}"/var/cache/apt/archives/*.deb
+rm "${DEBOOTSTAP_DIR}"/var/lib/apt/lists/deb.*
+rm "${DEBOOTSTAP_DIR}"/var/log/alternatives.log
+rm "${DEBOOTSTAP_DIR}"/var/log/bootstrap.log
+rm "${DEBOOTSTAP_DIR}"/var/log/dpkg.log
+
 
 
 echo "** tar"
