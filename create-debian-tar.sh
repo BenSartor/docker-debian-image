@@ -118,6 +118,7 @@ path-include /usr/share/omf/*/*-C.emf
 EOF
 
 chroot "${DEBOOTSTAP_DIR_SLIM}" bash -c "apt-get install ${APT_GET_OPTIONS} --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
+chroot "${DEBOOTSTAP_DIR_SLIM}" bash -c "apt-get remove --autoremove --purge --assume-yes tzdata"
 
 
 function create-tar() {
