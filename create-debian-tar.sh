@@ -146,5 +146,5 @@ function create-tar() {
 }
 
 declare -r DESTINATION_TAR_SLIM="$(dirname $DESTINATION_TAR)/$(basename $DESTINATION_TAR .tar)-slim.tar"
-create-tar "${DEBOOTSTAP_DIR}" "${DESTINATION_TAR}" ${DEBIAN_SOURCE_DATE}
-create-tar "${DEBOOTSTAP_DIR_SLIM}" "${DESTINATION_TAR_SLIM}" ${DEBIAN_SOURCE_DATE}
+create-tar "${DEBOOTSTAP_DIR}"      "${DESTINATION_TAR}"      "${DEBIAN_SOURCE_DATE}"
+create-tar "${DEBOOTSTAP_DIR_SLIM}" "${DESTINATION_TAR_SLIM}" "${DEBIAN_SOURCE_DATE}"
