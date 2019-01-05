@@ -116,9 +116,9 @@ chroot "${DEBOOTSTAP_DIR_SLIM}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive a
 
 
 function create-tar() {
-    local -r $L_DEBOOTSTAP_DIR=$1
-    local -r $L_DESTINATION_TAR=$2
-    local -r $L_DEBIAN_SOURCE_DATE=$3
+    local -r L_DEBOOTSTAP_DIR=$1
+    local -r L_DESTINATION_TAR=$2
+    local -r L_DEBIAN_SOURCE_DATE=$3
 
 
     echo "** delete some caches"
@@ -145,6 +145,6 @@ function create-tar() {
     tar --clamp-mtime --mtime="${L_DEBIAN_SOURCE_DATE}" --exclude=dev -C "${L_DEBOOTSTAP_DIR}" -cf "${L_DESTINATION_TAR}" .
 }
 
-declare -r DESTINATION_TAR_SLIM="$(dirname $DESTINATION_TAR)/$(basename $DESTINATION_TAR .tar)-slim.tar"
+declare -r DESTINATION_TAR_SLIM="$(dirname ${DESTINATION_TAR})/$(basename ${DESTINATION_TAR} .tar)-slim.tar"
 create-tar "${DEBOOTSTAP_DIR}"      "${DESTINATION_TAR}"      "${DEBIAN_SOURCE_DATE}"
 create-tar "${DEBOOTSTAP_DIR_SLIM}" "${DESTINATION_TAR_SLIM}" "${DEBIAN_SOURCE_DATE}"
