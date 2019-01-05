@@ -30,7 +30,7 @@ docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" "${DOCKER
 
 if [[ "${SKIP_DOCKER_IMPORT}" == "false" ]] ; then
     echo "create docker image"
-    docker import "${DEBOOTSTAP_TAR}" "${IMAGE_REPOSITORY}-${IMAGE_TAG}"
+    docker import "${DEBOOTSTAP_TAR}" "${IMAGE_REPOSITORY}:${IMAGE_TAG}"
     rm "${DEBOOTSTAP_TAR}"
 fi
 
