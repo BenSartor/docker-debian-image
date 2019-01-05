@@ -43,6 +43,29 @@ EOF
 
 
 
+echo "** update debian packages"
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes apt-transport-https"
+
+cat <<EOF > "${DEBOOTSTAP_DIR}/etc/apt/sources.list"
+## stretch
+deb https://deb.debian.org/debian/ stretch main
+#deb-src https://deb.debian.org/debian/ stretch main
+
+## stretch-security
+deb https://deb.debian.org/debian-security stretch/updates main
+#deb-src https://deb.debian.org/debian-security stretch/updates main
+
+## stretch-updates, previously known as 'volatile'
+deb https://deb.debian.org/debian/ stretch-updates main
+#deb-src https://deb.debian.org/debian/ stretch-updates main
+EOF
+
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommends --assume-yes"
+
+
+
 
 cat <<EOF > "${DEBOOTSTAP_DIR}/etc/dpkg/dpkg.cfg.d/docker"
 path-exclude=/usr/share/locale/*
