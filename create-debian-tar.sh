@@ -21,8 +21,13 @@ cat <<EOF > "${DEBOOTSTAP_DIR}/usr/sbin/policy-rc.d"
 #!/bin/sh
 exit 101
 EOF
-
 chmod ugo+x "${DEBOOTSTAP_DIR}/usr/sbin/policy-rc.d"
+
+cat <<EOF > "${DEBOOTSTAP_DIR}/sbin/initctl"
+#!/bin/sh
+exit 0
+EOF
+chmod ugo+x "${DEBOOTSTAP_DIR}/sbin/initctl"
 
 
 
