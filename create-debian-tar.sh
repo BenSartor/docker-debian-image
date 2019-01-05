@@ -27,6 +27,7 @@ LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommen
 LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes debootstrap tar
 
 
+
 echo "** debootstrap"
 debootstrap --variant=minbase stretch "${DEBOOTSTAP_DIR}" http://deb.debian.org/debian
 
