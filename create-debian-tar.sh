@@ -105,5 +105,11 @@ rm "${DEBOOTSTAP_DIR}"/var/log/apt/term.log
 
 
 
+echo "** make reproducable"
+echo "stretch" > "${DEBOOTSTAP_DIR}"/etc/hostname
+rm "${DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
+
+
+
 echo "** tar"
 tar --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
