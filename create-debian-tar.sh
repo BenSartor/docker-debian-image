@@ -68,11 +68,11 @@ chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-ge
 
 echo "** reduce image size"
 cat <<EOF > "${DEBOOTSTAP_DIR}/etc/dpkg/dpkg.cfg.d/docker"
-path-exclude=/usr/share/doc/*
-path-exclude=/usr/share/info/*
-path-exclude=/usr/share/lintian/overrides/*
-path-exclude=/usr/share/locale/*
-path-exclude=/usr/share/man/*
+path-exclude /usr/share/doc/*
+path-exclude /usr/share/info/*
+path-exclude /usr/share/lintian/overrides/*
+path-exclude /usr/share/locale/*
+path-exclude /usr/share/man/*
 EOF
 
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
