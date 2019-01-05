@@ -2,6 +2,7 @@
 set -eu -o pipefail
 
 declare -r DEBOOTSTAP_DIR=$1
+mkdir "${DEBOOTSTAP_DIR}"
 
 
 
