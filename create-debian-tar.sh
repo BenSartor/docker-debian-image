@@ -6,9 +6,9 @@ declare -r DEBOOTSTAP_DIR=$1
 
 
 echo "** install requirements"
-apt update
-apt dist-upgrade -y
-apt install -y debootstrap tar
+LANG=C DEBIAN_FRONTEND=noninteractive apt-get update
+LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommends --assume-yes
+LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes debootstrap tar
 
 
 echo "** debootstrap"
