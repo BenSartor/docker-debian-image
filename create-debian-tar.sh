@@ -65,7 +65,7 @@ EOF
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommends --assume-yes"
 
-declare -r DEBIAN_SOURCE_DATE=$(chroot dpkg-parsechangelog --show-field=Date)
+declare -r DEBIAN_SOURCE_DATE=$(chroot "${DEBOOTSTAP_DIR}" bash -c "stat -c %y /usr/share/doc/*/changelog.Debian.gz | sort | tail -n 1")
 echo "** DEBIAN_SOURCE_DATE=${DEBIAN_SOURCE_DATE}"
 
 
