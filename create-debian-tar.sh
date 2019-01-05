@@ -126,7 +126,7 @@ rm "${DEBOOTSTAP_DIR}"/var/log/apt/term.log
 
 
 echo "** make reproducable"
-echo "stretch" > "${DEBOOTSTAP_DIR}"/etc/hostname
+echo "$(basename $DESTINATION_TAR .tar)" > "${DEBOOTSTAP_DIR}"/etc/hostname
 rm "${DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
 chmod u+rwx "${DEBOOTSTAP_DIR}"
 chmod go-rwx "${DEBOOTSTAP_DIR}"
