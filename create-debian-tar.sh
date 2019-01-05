@@ -65,6 +65,9 @@ EOF
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get update"
 chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --no-install-recommends --assume-yes"
 
+declare -r DEBIAN_SOURCE_DATE=$(chroot dpkg-parsechangelog --show-field=Date)
+echo "** DEBIAN_SOURCE_DATE=${DEBIAN_SOURCE_DATE}"
+
 
 
 echo "** reduce image size"
@@ -112,5 +115,5 @@ rm "${DEBOOTSTAP_DIR}"/var/cache/ldconfig/aux-cache
 
 
 
-echo "** tar"
-tar --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
+echo "** creating tar with debian source date: ${DEBIAN_SOURCE_DATE}"
+tar --clamp-mtime --mtime="${DEBIAN_SOURCE_DATE}" --exclude=dev -C "${DEBOOTSTAP_DIR}" -cf "${DEBOOTSTAP_DIR}.tar" .
