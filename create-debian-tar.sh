@@ -10,7 +10,7 @@ export LC_ALL=C.UTF-8
 
 
 
-declare -r DEBOOTSTAP_DIR=$(mktemp --directory --tmpdir extract-vendor-image-XXXXXXXXXX)
+declare -r DEBOOTSTAP_DIR=$(mktemp --directory --tmpdir "$0-XXXXXXXXXX")
 echo "** created temporary directory: ${DEBOOTSTAP_DIR}"
 
 function cleanup {
