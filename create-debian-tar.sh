@@ -66,18 +66,15 @@ chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-ge
 
 
 
-
+echo "** reduce image size"
 cat <<EOF > "${DEBOOTSTAP_DIR}/etc/dpkg/dpkg.cfg.d/docker"
 path-exclude=/usr/share/locale/*
 path-exclude=/usr/share/man/*
 path-exclude=/usr/share/doc/*
 EOF
 
-#dpkg --get-selections > selections
-#dpkg --clear-selections
-#dpkg --set-selections < selections
-#apt-get --reinstall dselect-upgrade
-#LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes --reinstall $(dpkg --get-selections | grep -v deinstall | cut -f1 | sed "s/:amd64$//")
+chroot "${DEBOOTSTAP_DIR}" bash -c "LANG=C DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes --reinstall \$(dpkg --get-selections | grep -v deinstall | cut -f1 | sed \"s/:amd64\$//\")"
+
 
 
 echo "** delete some caches"
