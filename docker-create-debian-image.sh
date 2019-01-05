@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu -o pipefail
 
+declare -r IMAGE_REPOSITORY=${IMAGE_REPOSITORY:-"debootstrap"}
+declare -r IMAGE_TAG=${IMAGE_TAG:-"stretch"}
 declare -r SKIP_DOCKER_IMPORT=${SKIP_DOCKER_IMPORT:-"false"}
 declare -r DOCKER_BUILD_IMAGE=${DOCKER_BUILD_IMAGE:-"debian:stretch-slim"}
 
@@ -13,7 +15,7 @@ declare -r BASE_DIR="$(dirname $(${READLINK} -f $0))"
 declare -r BASE_DIR_DOCKER="/debian-docker"
 
 declare -r DOCKER_SCRIPT="${BASE_DIR_DOCKER}/create-debian-tar.sh"
-declare -r DEBOOTSTAP_TAR_NAME="debootstrap.tar"
+declare -r DEBOOTSTAP_TAR_NAME="${IMAGE_REPOSITORY}-${IMAGE_TAG}.tar"
 declare -r DEBOOTSTAP_TAR="${BASE_DIR}/${DEBOOTSTAP_TAR_NAME}"
 
 
@@ -28,7 +30,7 @@ docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" "${DOCKER
 
 if [[ "${SKIP_DOCKER_IMPORT}" == "false" ]] ; then
     echo "create docker image"
-    docker import "${DEBOOTSTAP_TAR}" debootstrap-stretch
+    docker import "${DEBOOTSTAP_TAR}" "${IMAGE_REPOSITORY}-${IMAGE_TAG}"
     rm "${DEBOOTSTAP_TAR}"
 fi
 
