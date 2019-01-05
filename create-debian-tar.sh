@@ -100,6 +100,8 @@ rm -rf "${DEBOOTSTAP_DIR}"/var/lib/apt/lists/*
 rm "${DEBOOTSTAP_DIR}"/var/log/alternatives.log
 rm "${DEBOOTSTAP_DIR}"/var/log/bootstrap.log
 rm "${DEBOOTSTAP_DIR}"/var/log/dpkg.log
+rm "${DEBOOTSTAP_DIR}"/var/log/apt/history.log
+rm "${DEBOOTSTAP_DIR}"/var/log/apt/term.log
 
 
 
