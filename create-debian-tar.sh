@@ -1,8 +1,9 @@
 #!/bin/bash
 set -eu -o pipefail
 
-declare -r DESTINATION_TAR=${1:?"usage example: $0 /tmp/debootstrap.tar"}
-declare -r DEBIAN_SUITE=${DEBIAN_SUITE:-"stretch"}
+declare -r USAGE="usage example: $0 stretch /tmp/debootstrap.tar"
+declare -r DEBIAN_SUITE=${1:?"${USAGE}"}
+declare -r DESTINATION_TAR=${2:?"${USAGE}"}
 
 
 ## use standard language for reproducibilty

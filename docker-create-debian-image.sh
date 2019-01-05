@@ -1,10 +1,11 @@
 #!/bin/bash
 set -eu -o pipefail
 
+declare -r DEBIAN_SUITE=${DEBIAN_SUITE:-"stretch"}
 declare -r IMAGE_REPOSITORY=${IMAGE_REPOSITORY:-"debootstrap"}
-declare -r IMAGE_TAG=${IMAGE_TAG:-"stretch"}
+declare -r IMAGE_TAG=${IMAGE_TAG:-"${DEBIAN_SUITE}"}
 declare -r SKIP_DOCKER_IMPORT=${SKIP_DOCKER_IMPORT:-"false"}
-declare -r DOCKER_BUILD_IMAGE=${DOCKER_BUILD_IMAGE:-"debian:stretch-slim"}
+declare -r DOCKER_BUILD_IMAGE=${DOCKER_BUILD_IMAGE:-"debian:${DEBIAN_SUITE}-slim"}
 
 
 
@@ -25,7 +26,7 @@ if [ -e "${DEBOOTSTAP_TAR}" ] ; then
 fi
 
 echo "debootstrap in docker container: ${DOCKER_BUILD_IMAGE}"
-docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" "${DOCKER_BUILD_IMAGE}" "${DOCKER_SCRIPT}" "${BASE_DIR_DOCKER}/${DEBOOTSTAP_TAR_NAME}"
+docker run -it --privileged --rm -v "${BASE_DIR}":"${BASE_DIR_DOCKER}" "${DOCKER_BUILD_IMAGE}" "${DOCKER_SCRIPT}" "${DEBIAN_SUITE}" "${BASE_DIR_DOCKER}/${DEBOOTSTAP_TAR_NAME}"
 
 
 if [[ "${SKIP_DOCKER_IMPORT}" == "false" ]] ; then
